@@ -12,11 +12,13 @@ test("publishes an installable DSH bundle manifest", async () => {
     "utf8",
   );
   assert.equal(manifest.name, "@april-jk/dsh-mobile");
-  assert.equal(manifest.version, "0.1.8");
+  assert.equal(manifest.version, "0.1.9");
   assert.deepEqual(manifest.bin, { "dsh-mobile": "dist/cli.js" });
   assert.equal(manifest.dsh.bundle.patch, "./cordis.patch.yml");
   assert.equal(manifest.exports["./client"], "./client.js");
   assert.equal(manifest.dsh.client.platform, "web");
+  assert.deepEqual(manifest.dsh.client.inject, ["@deepseek-ai/dsh-client-ui-settings"]);
+  assert.doesNotMatch(JSON.stringify(manifest.dsh.client.inject), /dsh-client-runtime/);
   assert.equal(manifest.scripts.prepack, "npm run build");
   assert.equal(manifest.license, "MIT");
   assert.equal(
@@ -56,7 +58,7 @@ test("documents a path-free official DSH install command", async () => {
   );
   assert.match(
     readme,
-    /npx @deepseek-ai\/dsh plugin --profile web add "github:april-jk\/dsh-mobile-plugin#v0\.1\.8"/,
+    /npx @deepseek-ai\/dsh plugin --profile web add "github:april-jk\/dsh-mobile-plugin#v0\.1\.9"/,
   );
   assert.doesNotMatch(readme, /\/absolute\/path/);
 });
